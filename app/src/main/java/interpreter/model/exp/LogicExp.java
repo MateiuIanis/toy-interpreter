@@ -18,13 +18,11 @@ public record LogicExp(LogicOp op, IExp left, IExp right)
         IValue rightValue = right.eval(symTable);
 
         if (!(leftValue instanceof BoolValue(boolean b1))) {
-            throw new ExpressionException(
-                    "first operand is not a boolean");
+            throw new ExpressionException("first operand is not a boolean");
         }
 
         if (!(rightValue instanceof BoolValue(boolean b2))) {
-            throw new ExpressionException(
-                    "second operand is not a boolean");
+            throw new ExpressionException("second operand is not a boolean");
         }
 
         return switch (op) {

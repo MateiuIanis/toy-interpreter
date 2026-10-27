@@ -13,8 +13,7 @@ public record VarExp(String id) implements IExp {
             throws MyException {
 
         if (!symTable.isDefined(id)) {
-            throw new ExpressionException(
-                    "variable " + id + " is not defined");
+            throw new ExpressionException("variable " + id + " is not defined");
         }
 
         return symTable.get(id);

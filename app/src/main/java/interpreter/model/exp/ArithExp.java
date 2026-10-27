@@ -18,13 +18,11 @@ public record ArithExp(ArithOp op, IExp left, IExp right)
         IValue rightValue = right.eval(symTable);
 
         if (!(leftValue instanceof IntValue(int n1))) {
-            throw new ExpressionException(
-                    "first operand is not an integer");
+            throw new ExpressionException("first operand is not an integer");
         }
 
         if (!(rightValue instanceof IntValue(int n2))) {
-            throw new ExpressionException(
-                    "second operand is not an integer");
+            throw new ExpressionException("second operand is not an integer");
         }
 
         return switch (op) {
