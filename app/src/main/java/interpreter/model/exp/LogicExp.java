@@ -7,8 +7,7 @@ import interpreter.model.value.BoolValue;
 import interpreter.exceptions.MyException;
 import interpreter.exceptions.ExpressionException;
 
-public record LogicExp(LogicOp op, IExp left, IExp right)
-        implements IExp {
+public record LogicExp(LogicOp op, IExp left, IExp right) implements IExp {
 
     @Override
     public IValue eval(IDictionary<String, IValue> symTable)

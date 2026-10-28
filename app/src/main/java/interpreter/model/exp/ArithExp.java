@@ -7,8 +7,7 @@ import interpreter.model.value.IntValue;
 import interpreter.exceptions.MyException;
 import interpreter.exceptions.ExpressionException;
 
-public record ArithExp(ArithOp op, IExp left, IExp right)
-        implements IExp {
+public record ArithExp(ArithOp op, IExp left, IExp right) implements IExp {
 
     @Override
     public IValue eval(IDictionary<String, IValue> symTable)
