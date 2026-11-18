@@ -50,4 +50,9 @@ public class MyDictionary<K, V> implements IDictionary<K, V> {
     public Map<K, V> toMap() {
         return Map.copyOf(dict);
     }
+
+    @Override
+    public String toString() {
+        return dict.toString();
+    }
 }
