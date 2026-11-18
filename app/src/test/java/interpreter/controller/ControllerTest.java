@@ -22,7 +22,7 @@ class ControllerTest {
 
         state.getExeStack().pop();
 
-        Controller controller = new Controller(new Repository(state));
+        Controller controller = new Controller(new Repository(state, "test-log.txt"));
 
         assertThrows(StatementException.class, () -> controller.oneStep(state));
     }

@@ -115,9 +115,7 @@ public class View {
 
                 PrgState state = PrgState.of(examples[index - 1]);
 
-                Controller controller = new Controller(
-                        new Repository(state)
-                );
+                Controller controller = new Controller(new Repository(state, "log.txt"));
 
                 controller.setDisplayFlag(true);
                 controller.allStep();
