@@ -18,8 +18,7 @@ public record IfStmt(
         IValue value = cond.eval(state.getSymTable());
 
         if (!(value instanceof BoolValue boolValue)) {
-            throw new StatementException(
-                    "The condition of IF must be boolean"
+            throw new StatementException("The condition of IF must be boolean"
             );
         }
 

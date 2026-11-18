@@ -56,7 +56,7 @@ public class PrgState {
 
     @Override
     public String toString() {
-        return "Execution Stack: " + exeStack
+        return "\nExecution Stack: " + exeStack
                 + "\nSymbol Table: " + symTable
                 + "\nOutput: " + out
                 + "\nOriginal Program: " + originalProgram;
