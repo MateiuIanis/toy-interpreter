@@ -18,7 +18,7 @@ public record AssignStmt(String id, IExp exp) implements IStmt {
 
         IValue val = exp.eval(symTable);
 
-        if (!val.getType().equals(symTable.get(id).getType())) {
+        if (!val.getType().equals(symTable.lookup(id).getType())) {
             throw new StatementException("Declared type of variable " + id + " and type of the assigned expression do not match");
         }
 

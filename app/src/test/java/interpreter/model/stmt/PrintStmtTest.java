@@ -15,8 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class PrintStmtTest {
     @Test
     void printAddsEvaluatedValueToOutput() throws MyException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(),
-                new MyList<>(), new VarDeclStmt("x", new IntType()));
+        PrgState state = PrgState.of(
+                new VarDeclStmt("x", new IntType())
+        );
 
         new PrintStmt(new ValueExp(new IntValue(42))).execute(state);
 

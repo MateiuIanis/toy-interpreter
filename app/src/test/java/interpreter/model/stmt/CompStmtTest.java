@@ -16,8 +16,9 @@ class CompStmtTest {
         IStmt first = new VarDeclStmt("x", new IntType());
         IStmt second = new VarDeclStmt("y", new IntType());
 
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(),
-                new MyList<>(), first);
+        PrgState state = PrgState.of(
+                new VarDeclStmt("x", new IntType())
+        );
 
         new CompStmt(first, second).execute(state);
 

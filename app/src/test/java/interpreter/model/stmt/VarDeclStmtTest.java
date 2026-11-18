@@ -14,8 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class VarDeclStmtTest {
     private PrgState freshState() {
-        return new PrgState(new MyStack<>(), new MyDictionary<>(),
-                new MyList<>(), new VarDeclStmt("y", new IntType()));
+        PrgState state = PrgState.of(
+                new VarDeclStmt("x", new IntType())
+        );
+        return state;
     }
 
     @Test
@@ -24,7 +26,7 @@ class VarDeclStmtTest {
         new VarDeclStmt("x", new IntType()).execute(state);
 
         assertTrue(state.getSymTable().isDefined("x"));
-        assertEquals(new IntValue(0), state.getSymTable().get("x"));
+        assertEquals(new IntValue(0), state.getSymTable().lookup("x"));
     }
 
     @Test

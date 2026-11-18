@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AssignStmtTest {
     private PrgState freshState() {
-        return new PrgState(new MyStack<>(), new MyDictionary<>(),
-                new MyList<>(), new VarDeclStmt("y", new IntType()));
+        PrgState state = PrgState.of(
+                new VarDeclStmt("x", new IntType())
+        );
+        return state;
     }
 
     @Test
@@ -26,7 +28,7 @@ class AssignStmtTest {
         new VarDeclStmt("x", new IntType()).execute(state);
         new AssignStmt("x", new ValueExp(new IntValue(10))).execute(state);
 
-        assertEquals(new IntValue(10), state.getSymTable().get("x"));
+        assertEquals(new IntValue(10), state.getSymTable().lookup("x"));
     }
 
     @Test

@@ -16,8 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
     @Test
     void oneStepOnEmptyStackThrows() throws ADTException {
-        PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(),
-                new MyList<>(), new VarDeclStmt("x", new IntType()));
+        PrgState state = PrgState.of(
+                new VarDeclStmt("x", new IntType())
+        );
 
         state.getExeStack().pop();
 

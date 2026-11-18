@@ -1,37 +1,53 @@
 package interpreter.model.adt;
 
+import interpreter.exceptions.ADTException;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class MyDictionary<K, V> implements IDictionary<K, V> {
-    private final Map<K, V> content;
+    private final Map<K, V> dict;
 
     public MyDictionary() {
-        content = new HashMap<>();
+        this.dict = new HashMap<>();
     }
 
     @Override
     public boolean isDefined(K key) {
-        return content.containsKey(key);
+        return dict.containsKey(key);
     }
 
     @Override
-    public V get(K key) {
-        return content.get(key);
+    public V lookup(K key) throws ADTException {
+        if (!dict.containsKey(key)) {
+            throw new ADTException("Key does not exist");
+        }
+        return dict.get(key);
     }
 
     @Override
     public void put(K key, V value) {
-        content.put(key, value);
+        dict.put(key, value);
     }
 
     @Override
-    public Map<K, V> getContent() {
-        return content;
+    public void update(K key, V value) throws ADTException {
+        if (!dict.containsKey(key)) {
+            throw new ADTException("Key does not exist");
+        }
+        dict.put(key, value);
     }
 
     @Override
-    public String toString() {
-        return content.toString();
+    public void remove(K key) throws ADTException {
+        if (!dict.containsKey(key)) {
+            throw new ADTException("Key does not exist");
+        }
+        dict.remove(key);
+    }
+
+    @Override
+    public Map<K, V> toMap() {
+        return Map.copyOf(dict);
     }
 }

@@ -113,12 +113,7 @@ public class View {
                     continue;
                 }
 
-                PrgState state = new PrgState(
-                        new MyStack<>(),
-                        new MyDictionary<>(),
-                        new MyList<>(),
-                        examples[index - 1]
-                );
+                PrgState state = PrgState.of(examples[index - 1]);
 
                 Controller controller = new Controller(
                         new Repository(state)
