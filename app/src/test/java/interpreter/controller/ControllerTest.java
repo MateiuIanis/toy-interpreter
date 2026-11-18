@@ -1,3 +1,4 @@
+
 package interpreter.controller;
 
 import interpreter.exceptions.ADTException;
@@ -8,12 +9,21 @@ import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
 import interpreter.model.stmt.VarDeclStmt;
 import interpreter.model.type.IntType;
+import interpreter.model.value.IntValue;
 import interpreter.repository.Repository;
+import interpreter.view.Examples;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
+    @TempDir
+    Path dir;
+
     @Test
     void oneStepOnEmptyStackThrows() throws ADTException {
         PrgState state = PrgState.of(
@@ -22,8 +32,92 @@ class ControllerTest {
 
         state.getExeStack().pop();
 
-        Controller controller = new Controller(new Repository(state, "test-log.txt"));
+        Controller controller = new Controller(
+                new Repository(state, dir.resolve("test-log.txt").toString())
+        );
 
         assertThrows(StatementException.class, () -> controller.oneStep(state));
+    }
+
+    @Test
+    void logContainsAllSectionsInCorrectOrder() throws Exception {
+        PrgState state = PrgState.of(
+                new VarDeclStmt("x", new IntType())
+        );
+
+        Path log = dir.resolve("log.txt");
+        Controller controller = new Controller(
+                new Repository(state, log.toString())
+        );
+
+        controller.allStep();
+
+        String content = Files.readString(log);
+
+        int exeStack = content.indexOf("ExeStack:");
+        int symTable = content.indexOf("SymTable:");
+        int out = content.indexOf("Out:");
+        int fileTable = content.indexOf("FileTable:");
+
+        assertTrue(exeStack >= 0);
+        assertTrue(symTable > exeStack);
+        assertTrue(out > symTable);
+        assertTrue(fileTable > out);
+    }
+
+    @Test
+    void example5PrintsFive() throws Exception {
+        PrgState state = PrgState.of(Examples.EX5);
+
+        Controller controller = new Controller(
+                new Repository(state, dir.resolve("ex5-log.txt").toString())
+        );
+
+        controller.allStep();
+
+        assertEquals(
+                new IntValue(5),
+                state.getOut().get(0)
+        );
+    }
+
+    @Test
+    void fileExampleReadsTwoNumbersAndClosesFile() throws Exception {
+        Path input = dir.resolve("numbers.in");
+        Files.writeString(input, "15\n50\n");
+
+        PrgState state = PrgState.of(
+                Examples.fileExample(input.toString())
+        );
+
+        Controller controller = new Controller(
+                new Repository(state, dir.resolve("ex4-log.txt").toString())
+        );
+
+        controller.allStep();
+
+        assertEquals(new IntValue(15), state.getOut().get(0));
+        assertEquals(new IntValue(50), state.getOut().get(1));
+        assertTrue(state.getFileTable().toMap().isEmpty());
+    }
+
+    @Test
+    void fileExampleWithEmptyFilePrintsZeroTwice() throws Exception {
+        Path input = dir.resolve("empty.in");
+        Files.writeString(input, "");
+
+        PrgState state = PrgState.of(
+                Examples.fileExample(input.toString())
+        );
+
+        Controller controller = new Controller(
+                new Repository(state, dir.resolve("empty-log.txt").toString())
+        );
+
+        controller.allStep();
+
+        assertEquals(new IntValue(0), state.getOut().get(0));
+        assertEquals(new IntValue(0), state.getOut().get(1));
+        assertTrue(state.getFileTable().toMap().isEmpty());
     }
 }
