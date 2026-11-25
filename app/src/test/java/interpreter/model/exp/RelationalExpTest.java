@@ -3,7 +3,9 @@ package interpreter.model.exp;
 
 import interpreter.exceptions.ExpressionException;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.adt.MyHeap;
 import interpreter.model.value.BoolValue;
+import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,10 @@ class RelationalExpTest {
                 new ValueExp(new IntValue(right))
         );
 
-        return (BoolValue) exp.eval(new MyDictionary<>());
+        return (BoolValue) exp.eval(
+                new MyDictionary<String, IValue>(),
+                new MyHeap()
+        );
     }
 
     @Test
@@ -67,7 +72,10 @@ class RelationalExpTest {
 
         assertThrows(
                 ExpressionException.class,
-                () -> exp.eval(new MyDictionary<>())
+                () -> exp.eval(
+                        new MyDictionary<String, IValue>(),
+                        new MyHeap()
+                )
         );
     }
 }

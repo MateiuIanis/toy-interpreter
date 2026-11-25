@@ -4,6 +4,7 @@ import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.adt.MyHeap;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
@@ -27,25 +28,25 @@ class ArithExpTest {
     @Test
     void additionWorks() throws MyException {
         assertEquals(new IntValue(5),
-                new ArithExp(ArithOp.ADD, num(2), num(3)).eval(symTable));
+                new ArithExp(ArithOp.ADD, num(2), num(3)).eval(symTable, new MyHeap()));
     }
 
     @Test
     void subtractionWorks() throws MyException {
         assertEquals(new IntValue(1),
-                new ArithExp(ArithOp.SUB, num(3), num(2)).eval(symTable));
+                new ArithExp(ArithOp.SUB, num(3), num(2)).eval(symTable, new MyHeap()));
     }
 
     @Test
     void multiplicationWorks() throws MyException {
         assertEquals(new IntValue(6),
-                new ArithExp(ArithOp.MUL, num(2), num(3)).eval(symTable));
+                new ArithExp(ArithOp.MUL, num(2), num(3)).eval(symTable, new MyHeap()));
     }
 
     @Test
     void divisionWorks() throws MyException {
         assertEquals(new IntValue(4),
-                new ArithExp(ArithOp.DIV, num(8), num(2)).eval(symTable));
+                new ArithExp(ArithOp.DIV, num(8), num(2)).eval(symTable, new MyHeap()));
     }
 
     @Test
@@ -54,13 +55,13 @@ class ArithExpTest {
                 ArithOp.ADD, num(2),
                 new ArithExp(ArithOp.MUL, num(3), num(5))
         );
-        assertEquals(new IntValue(17), expression.eval(symTable));
+        assertEquals(new IntValue(17), expression.eval(symTable, new MyHeap()));
     }
 
     @Test
     void divisionByZeroThrows() {
         IExp expression = new ArithExp(ArithOp.DIV, num(1), num(0));
-        assertThrows(ExpressionException.class, () -> expression.eval(symTable));
+        assertThrows(ExpressionException.class, () -> expression.eval(symTable, new MyHeap()));
     }
 
     @Test
@@ -68,6 +69,6 @@ class ArithExpTest {
         IExp expression = new ArithExp(
                 ArithOp.ADD, new ValueExp(new BoolValue(true)), num(1)
         );
-        assertThrows(ExpressionException.class, () -> expression.eval(symTable));
+        assertThrows(ExpressionException.class, () -> expression.eval(symTable, new MyHeap()));
     }
 }

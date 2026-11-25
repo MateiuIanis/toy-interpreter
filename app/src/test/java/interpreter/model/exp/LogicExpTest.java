@@ -4,6 +4,7 @@ import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.adt.MyHeap;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
@@ -27,13 +28,13 @@ class LogicExpTest {
     @Test
     void andWorks() throws MyException {
         assertEquals(new BoolValue(false),
-                new LogicExp(LogicOp.AND, bool(true), bool(false)).eval(symTable));
+                new LogicExp(LogicOp.AND, bool(true), bool(false)).eval(symTable, new MyHeap()));
     }
 
     @Test
     void orWorks() throws MyException {
         assertEquals(new BoolValue(true),
-                new LogicExp(LogicOp.OR, bool(false), bool(true)).eval(symTable));
+                new LogicExp(LogicOp.OR, bool(false), bool(true)).eval(symTable, new MyHeap()));
     }
 
     @Test
@@ -41,6 +42,6 @@ class LogicExpTest {
         IExp expression = new LogicExp(
                 LogicOp.AND, new ValueExp(new IntValue(1)), bool(true)
         );
-        assertThrows(ExpressionException.class, () -> expression.eval(symTable));
+        assertThrows(ExpressionException.class, () -> expression.eval(symTable, new MyHeap()));
     }
 }

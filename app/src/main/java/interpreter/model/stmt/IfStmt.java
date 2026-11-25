@@ -15,7 +15,7 @@ public record IfStmt(
 
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        IValue value = cond.eval(state.getSymTable());
+        IValue value = cond.eval(state.getSymTable(), state.getHeap());
 
         if (!(value instanceof BoolValue boolValue)) {
             throw new StatementException("The condition of IF must be boolean"
