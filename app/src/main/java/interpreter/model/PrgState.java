@@ -1,10 +1,13 @@
+
 package interpreter.model;
 
 import interpreter.model.adt.*;
 import interpreter.model.stmt.IStmt;
 import interpreter.model.value.IValue;
 import interpreter.model.value.StringValue;
+
 import java.io.BufferedReader;
+import java.util.TreeMap;
 
 public class PrgState {
     private IStack<IStmt> exeStack;
@@ -12,18 +15,21 @@ public class PrgState {
     private IList<IValue> out;
     private final IStmt originalProgram;
     private IDictionary<StringValue, BufferedReader> fileTable;
+    private IHeap heap;
 
     public PrgState(
             IStack<IStmt> exeStack,
             IDictionary<String, IValue> symTable,
             IList<IValue> out,
             IDictionary<StringValue, BufferedReader> fileTable,
+            IHeap heap,
             IStmt program) {
 
         this.exeStack = exeStack;
         this.symTable = symTable;
         this.out = out;
         this.fileTable = fileTable;
+        this.heap = heap;
         this.originalProgram = program;
 
         this.exeStack.push(program);
@@ -35,8 +41,13 @@ public class PrgState {
                 new MyDictionary<>(),
                 new MyList<>(),
                 new MyDictionary<>(),
+                new MyHeap(),
                 program
         );
+    }
+
+    public IHeap getHeap() {
+        return heap;
     }
 
     public IDictionary<StringValue, BufferedReader> getFileTable() {
@@ -92,6 +103,10 @@ public class PrgState {
         fileTable.toMap().keySet().forEach(f ->
                 sb.append(f.val()).append('\n'));
 
+        sb.append("Heap:\n");
+        new TreeMap<>(heap.getContent()).forEach((address, value) ->
+                sb.append(address).append(" --> ").append(value).append('\n'));
+
         return sb.toString();
     }
 
@@ -101,6 +116,7 @@ public class PrgState {
                 + "\nSymbol Table: " + symTable
                 + "\nOutput: " + out
                 + "\nFile Table: " + fileTable
+                + "\nHeap: " + heap
                 + "\nOriginal Program: " + originalProgram;
     }
 }
